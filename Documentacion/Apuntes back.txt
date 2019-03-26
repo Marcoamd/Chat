@@ -1,0 +1,5 @@
+npm init
+tsc --init
+npm i express, body-parser, socket.io
+npm i @types/express -D
+npm i @types/socket.io -D
