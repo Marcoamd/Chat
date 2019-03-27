@@ -1,0 +1,12 @@
+git init
+git status
+git add .
+
+ng new Chat
+
+https://www.npmjs.com/package/socket.io
+npm i ngx-socket-io
+
+app.module.ts
+importar SocketIoModule y SocketIoConfig de ngx-socket-io
+en imports SocketIoModule.forRoot(config)
