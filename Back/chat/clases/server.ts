@@ -17,6 +17,22 @@ export default class Server
         this.httpServer = new http.Server(this.app);
         this.io = socketIO(this.httpServer);
         this.puerto = process.env.PORT || 3700;
+        this.escucharSockets();
+    }
+
+    escucharSockets()
+    {
+        console.log("Escuchando sockets");
+        this.io.on('connect',(cliente)=>{
+            console.log(`${cliente.id} se ha conectado`);
+            cliente.on('disconnect',()=>{
+                console.log(`${cliente.id} se ha desconectado`);
+            });
+            cliente.on('eviar-mensaje',(payload)=>{
+                console.log(payload);
+                this.io.emit('mensaje-nuevo', payload);
+            });
+        });
     }
 
     start()

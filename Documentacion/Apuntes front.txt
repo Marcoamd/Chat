@@ -1,8 +1,18 @@
 git init
 git status
 git add .
+git commit -m "Proyecto inicial con configuracion de socket en front back"
+-
+-
+git tag
+git tag -a v1.0.0 -m "REST server inicial"
+git push --tags
+
+-----------------------------------------------------------------------------
 
 ng new Chat
+
+-----------------------------------------------------------------------------
 
 https://www.npmjs.com/package/socket.io
 npm i ngx-socket-io
@@ -10,3 +20,23 @@ npm i ngx-socket-io
 app.module.ts
 importar SocketIoModule y SocketIoConfig de ngx-socket-io
 en imports SocketIoModule.forRoot(config)
+
+-----------------------------------------------------------------------------
+
+global is not defined
+
+https://github.com/aws-amplify/amplify-js/issues/678
+
+en index.ts copiar:
+<!-- https://github.com/aws/aws-amplify/issues/678 fix: -->
+<script>
+  if (global === undefined) {
+    var global = window;
+  }
+</script>
+<!-- https://github.com/aws/aws-amplify/issues/678 fix end-->
+
+-----------------------------------------------------------------------------
+
+ng g s services/websocket
+
