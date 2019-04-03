@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { WebsocketService } from 'src/app/services/websocket.service';
+import { Router } from '@angular/router';
 declare var FB:any;
 
 @Component({
@@ -9,7 +11,14 @@ declare var FB:any;
 export class LoginComponent implements OnInit {
 
   nombre: string;
-  constructor() { }
+  constructor(private _sWebsocket:WebsocketService, private _router:Router){
+    if(localStorage.getItem('usuario'))
+    {
+      this.nombre = JSON.parse(localStorage.getItem('usuario')).nombre;
+      this._sWebsocket.loginWs(this.nombre);
+      this._router.navigateByUrl("/mensajes");
+    }
+  }
 
   ngOnInit() {
     (window as any).fbAsyncInit = function() {
@@ -53,12 +62,26 @@ export class LoginComponent implements OnInit {
   {
     FB.api('/'+id+'/',{fields:'name,first_name,last_name,picture'},
     (response)=>{
-      console.log("1");
-      console.log(response);
+      console.log("Error");
     },
     (response)=>{      
-      console.log("2");
-      console.log(response);
+      console.log("Éxito");
+      this.nombre = response.name;
+      this._sWebsocket.loginWs(this.nombre);
+      this._router.navigateByUrl("/mensajes");
     });
+  }
+
+  ingresar(evento)
+  {
+    evento.preventDefault();
+    this._sWebsocket.loginWs(this.nombre);
+    this._router.navigateByUrl("/mensajes");
+  }
+
+  cerrarSesion()
+  {
+    this._sWebsocket.cerrarSesion();
+    this._router.navigateByUrl("/");
   }
 }

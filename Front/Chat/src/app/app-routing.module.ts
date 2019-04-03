@@ -7,6 +7,10 @@ const rutas:Routes = [
   {
     path:'',
     component:LoginComponent
+  },
+  {
+    path:'mensajes',
+    component:MensajesComponent
   }
 ];
 
