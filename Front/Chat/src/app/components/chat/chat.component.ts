@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SystemJsNgModuleLoaderConfig } from '@angular/core';
 import { WebsocketService } from 'src/app/services/websocket.service';
 
 @Component({
@@ -15,18 +15,24 @@ export class ChatComponent implements OnInit {
 
   ngOnInit() {
     this.div = document.getElementById("mensajes");
-    this._sWebsocket.escuchar('mensaje-nuevo').subscribe((mensaje:string)=>{
+    this._sWebsocket.escuchar('mensaje-nuevo').subscribe((payload:any)=>{
       let p = document.createElement("p");
-      p.innerHTML = mensaje;
+      p.innerHTML = payload.usuario + " dice: " + payload.mensaje;
       this.div.appendChild(p);
-      console.log(mensaje);
+      setTimeout(()=>{
+        this.div.scrollTop = this.div.scrollHeight;
+      }, 50);
     });
   }
 
   enviar()
   {
     console.log("Enviando mensaje... " + this.mensaje);
-    this._sWebsocket.emitir('eviar-mensaje', this.mensaje);
+    let contenido = {
+      mensaje: this.mensaje,
+      usuario: JSON.parse(localStorage.getItem("usuario")).nombre
+    }
+    this._sWebsocket.emitir('eviar-mensaje', contenido);
     this.mensaje = "";
   }
 
