@@ -2,5 +2,5 @@
 
 ## Technologies
 
-- Angular 9
+- Angular
 - NodeJS
